@@ -1,0 +1,67 @@
+# Dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime files
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Test reports
+reports/
+test-results/
+allure-results/
+allure-report/
+
+# Screenshots e vídeos de falhas
+screenshots/
+videos/
+
+# Playwright
+playwright-report/
+blob-report/
+test-results/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# IDEs
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build
+dist/
+build/
+
+# Cache
+.cache/
+.npm/
+
+# Jenkins
+workspace/
+jenkins_home/
+
+# Package lock (opcional)
+# package-lock.json
