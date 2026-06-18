@@ -8,38 +8,60 @@ pipeline {
 
     options {
         timestamps()
+        ansiColor('xterm')
+        disableConcurrentBuilds()
     }
 
-    stage('E2E Tests') {
-        parallel {
+    environment {
+        NODE_ENV = 'test'
+    }
 
-            stage('Login') {
-                steps {
-                    sh 'npx cucumber-js features/login.feature'
-                }
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
             }
+        }
 
-            stage('Products') {
-                steps {
-                    sh 'npx cucumber-js features/products.feature'
-                }
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm ci'
             }
+        }
 
-            stage('Cart') {
-                steps {
-                    sh 'npx cucumber-js features/cart.feature'
+        stage('Execute E2E Features') {
+
+            parallel {
+
+                stage('Login') {
+                    steps {
+                        sh 'npx cucumber-js features/login.feature'
+                    }
                 }
-            }
 
-            stage('Checkout') {
-                steps {
-                    sh 'npx cucumber-js features/checkout.feature'
+                stage('Products') {
+                    steps {
+                        sh 'npx cucumber-js features/products.feature'
+                    }
                 }
-            }
 
-            stage('Admin') {
-                steps {
-                    sh 'npx cucumber-js features/admin-access.feature'
+                stage('Cart') {
+                    steps {
+                        sh 'npx cucumber-js features/cart.feature'
+                    }
+                }
+
+                stage('Checkout') {
+                    steps {
+                        sh 'npx cucumber-js features/checkout.feature'
+                    }
+                }
+
+                stage('Admin Access') {
+                    steps {
+                        sh 'npx cucumber-js features/admin-access.feature'
+                    }
                 }
             }
         }
@@ -48,18 +70,37 @@ pipeline {
     post {
 
         always {
+
             archiveArtifacts(
-                artifacts: '**/*.png, **/*.log',
+                artifacts: '''
+                    reports/**/*,
+                    screenshots/**/*,
+                    videos/**/*,
+                    logs/**/*
+                '''.stripIndent(),
                 allowEmptyArchive: true
+            )
+
+            junit(
+                testResults: 'reports/**/*.xml',
+                allowEmptyResults: true
             )
         }
 
         success {
-            echo '✅ Todos os cenários passaram'
+            echo '✅ Todos os testes E2E executaram com sucesso.'
+        }
+
+        unstable {
+            echo '⚠️ Existem testes com falha.'
         }
 
         failure {
-            echo '❌ Existem falhas nos testes'
+            echo '❌ Pipeline falhou.'
+        }
+
+        cleanup {
+            cleanWs()
         }
     }
 }
