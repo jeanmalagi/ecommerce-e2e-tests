@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     stages {
@@ -9,49 +10,63 @@ pipeline {
             }
         }
 
-        stage('Verificar Ambiente') {
-            steps {
-                bat 'node -v'
-                bat 'npm -v'
-            }
-        }
-
-        stage('Instalar Dependências') {
+        stage('Install Dependencies') {
             steps {
                 bat 'npm ci'
             }
         }
 
         stage('Features') {
+
             parallel {
 
                 stage('Login') {
                     steps {
-                        bat 'npx cucumber-js features/login.feature'
+                        bat '''
+                        npx cucumber-js tests/features/login.feature ^
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "tests/support/**/*.mjs"
+                        '''
                     }
                 }
 
                 stage('Products') {
                     steps {
-                        bat 'npx cucumber-js features/products.feature'
+                        bat '''
+                        npx cucumber-js tests/features/products.feature ^
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "tests/support/**/*.mjs"
+                        '''
                     }
                 }
 
                 stage('Cart') {
                     steps {
-                        bat 'npx cucumber-js features/cart.feature'
+                        bat '''
+                        npx cucumber-js tests/features/cart.feature ^
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "tests/support/**/*.mjs"
+                        '''
                     }
                 }
 
                 stage('Checkout') {
                     steps {
-                        bat 'npx cucumber-js features/checkout.feature'
+                        bat '''
+                        npx cucumber-js tests/features/checkout.feature ^
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "tests/support/**/*.mjs"
+                        '''
                     }
                 }
 
-                stage('Admin') {
+                stage('Admin Access') {
                     steps {
-                        bat 'npx cucumber-js features/admin-access.feature'
+                        bat '''
+                        npx cucumber-js tests/features/admin-access.feature ^
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "tests/support/**/*.mjs"
+                        '''
                     }
                 }
             }
@@ -59,8 +74,17 @@ pipeline {
     }
 
     post {
+
+        success {
+            echo '✅ Todos os testes passaram.'
+        }
+
+        failure {
+            echo '❌ Existem testes falhando.'
+        }
+
         always {
-            archiveArtifacts artifacts: '**/*.log', allowEmptyArchive: true
+            archiveArtifacts artifacts: '**/*.png, **/*.log', allowEmptyArchive: true
         }
     }
 }
