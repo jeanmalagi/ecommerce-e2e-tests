@@ -69,10 +69,13 @@ When('finaliza a compra', async function () {
 });
 
 When('confirma a compra', async function () {
-  const confirmButton = this.page.getByRole('button', {
-    name: /finalizar/i
-  });
+  // Escopa o botão de confirmação ao modal de finalização
+  const modalHeading = this.page.getByRole('heading', { name: /confirmar compra\?/i });
+  await modalHeading.waitFor({ timeout: 10000 });
 
+  const modal = modalHeading.locator('xpath=ancestor::div[1]');
+
+  const confirmButton = modal.getByRole('button', { name: /^Finalizar$/i });
   await confirmButton.waitFor({ timeout: 10000 });
   await confirmButton.click();
 });

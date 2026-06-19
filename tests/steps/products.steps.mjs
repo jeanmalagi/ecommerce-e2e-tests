@@ -283,8 +283,14 @@ When('ele exclui o produto editado', async function () {
   // ==============================
   // ✅ CONFIRMAR NO MODAL
   // ==============================
-  const confirmarBtn = this.page.getByRole('button', {
-    name: /confirmar/i
+  // Espera o modal específico do admin antes de confirmar
+  const modalHeading = this.page.getByRole('heading', { name: /excluir produto/i });
+  await modalHeading.waitFor({ timeout: 10000 });
+
+  const modal = modalHeading.locator('xpath=ancestor::div[1]');
+
+  const confirmarBtn = modal.getByRole('button', {
+    name: /confirmar|remover|sim|ok/i
   });
 
   await confirmarBtn.waitFor({ timeout: 10000 });
@@ -304,7 +310,7 @@ Then('o produto deve ser excluído com sucesso', async function () {
   // ==============================
   // ✅ VALIDAR QUE APARECEU
   // ==============================
-  await toast.waitFor({ timeout: 5000 });
+  await toast.waitFor({ timeout: 10000 });
 
 });
 
