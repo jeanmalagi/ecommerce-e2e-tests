@@ -158,16 +158,15 @@ pipeline {
                     mkdir allure-report
 
                     for %%D in (login products cart checkout admin-access) do (
-                        dir /b allure-results/%%D/*-result.json >nul 2>nul
-                        if errorlevel 1 (
-                            echo Nenhum resultado Allure encontrado para %%D
-                        ) else (
+                        if exist "allure-results\\%%D\\*-result.json" (
                             echo Gerando report para %%D...
-                            npx allure generate allure-results/%%D -o allure-report/%%D --clean --single-file
-                            if not exist allure-report/%%D/index.html (
+                            npx allure generate "allure-results\\%%D" -o "allure-report\\%%D" --clean
+                            if not exist "allure-report\\%%D\\index.html" (
                                 echo index.html nao foi gerado para %%D
                                 exit /b 2
                             )
+                        ) else (
+                            echo Nenhum resultado Allure encontrado para %%D
                         )
                     )
 
