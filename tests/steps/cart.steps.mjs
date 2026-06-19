@@ -6,6 +6,42 @@ import {
 
 import assert from 'assert';
 
+async function ensureCartIsEmpty(page) {
+  const cartLink = page.getByRole('link', {
+    name: /carrinho \(\d+\)/i
+  });
+
+  await cartLink.waitFor({ timeout: 10000 });
+
+  const cartText = await cartLink.first().innerText();
+  const match = cartText.match(/\((\d+)\)/);
+  const cartCount = match ? Number(match[1]) : 0;
+
+  if (cartCount === 0) {
+    return;
+  }
+
+  await cartLink.first().click();
+
+  const clearButton = page.getByTestId('clear-cart');
+  await clearButton.waitFor({ timeout: 10000 });
+  await clearButton.click();
+
+  const confirmButton = page.getByRole('button', {
+    name: /confirmar/i
+  });
+  await confirmButton.waitFor({ timeout: 10000 });
+  await confirmButton.click();
+
+  const emptyMessage = page.getByText(/seu carrinho está vazio/i);
+  await emptyMessage.waitFor({ timeout: 10000 });
+
+  const productsLink = page.getByRole('link', { name: /produtos/i });
+  if (await productsLink.count()) {
+    await productsLink.first().click();
+  }
+}
+
 
 // ==============================
 // ✅ GIVEN - CLIENTE LOGADO
@@ -25,6 +61,8 @@ Given('que o cliente está logado', async function () {
   });
 
   await title.waitFor();
+
+  await ensureCartIsEmpty(this.page);
 });
 
 
