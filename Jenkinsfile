@@ -30,7 +30,9 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/login.feature ^
-                        --config cucumber.mjs
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "support/**/*.mjs" ^
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
@@ -39,7 +41,9 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/products.feature ^
-                        --config cucumber.mjs
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "support/**/*.mjs" ^
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
@@ -48,7 +52,9 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/cart.feature ^
-                        --config cucumber.mjs
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "support/**/*.mjs" ^
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
@@ -57,7 +63,9 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/checkout.feature ^
-                        --config cucumber.mjs
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "support/**/*.mjs" ^
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
@@ -66,7 +74,9 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/admin-access.feature ^
-                        --config cucumber.mjs
+                        --import "tests/steps/**/*.mjs" ^
+                        --import "support/**/*.mjs" ^
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
