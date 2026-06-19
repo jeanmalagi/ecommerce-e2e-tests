@@ -58,7 +58,11 @@ pipeline {
                                     echo Nenhum resultado Allure encontrado para login
                                     exit /b 0
                                 )
-                                npx allure generate allure-results/login -o allure-report/login --clean
+                                npx allure generate allure-results/login -o allure-report/login --clean --single-file
+                                if not exist allure-report/login/index.html (
+                                    echo index.html nao foi gerado para login
+                                    exit /b 1
+                                )
                                 '''
                                 if (testStatus != 0) {
                                     error('Login tests failed')
@@ -85,7 +89,11 @@ pipeline {
                                     echo Nenhum resultado Allure encontrado para products
                                     exit /b 0
                                 )
-                                npx allure generate allure-results/products -o allure-report/products --clean
+                                npx allure generate allure-results/products -o allure-report/products --clean --single-file
+                                if not exist allure-report/products/index.html (
+                                    echo index.html nao foi gerado para products
+                                    exit /b 1
+                                )
                                 '''
                                 if (testStatus != 0) {
                                     error('Products tests failed')
@@ -112,7 +120,11 @@ pipeline {
                                     echo Nenhum resultado Allure encontrado para cart
                                     exit /b 0
                                 )
-                                npx allure generate allure-results/cart -o allure-report/cart --clean
+                                npx allure generate allure-results/cart -o allure-report/cart --clean --single-file
+                                if not exist allure-report/cart/index.html (
+                                    echo index.html nao foi gerado para cart
+                                    exit /b 1
+                                )
                                 '''
                                 if (testStatus != 0) {
                                     error('Cart tests failed')
@@ -139,7 +151,11 @@ pipeline {
                                     echo Nenhum resultado Allure encontrado para checkout
                                     exit /b 0
                                 )
-                                npx allure generate allure-results/checkout -o allure-report/checkout --clean
+                                npx allure generate allure-results/checkout -o allure-report/checkout --clean --single-file
+                                if not exist allure-report/checkout/index.html (
+                                    echo index.html nao foi gerado para checkout
+                                    exit /b 1
+                                )
                                 '''
                                 if (testStatus != 0) {
                                     error('Checkout tests failed')
@@ -166,7 +182,11 @@ pipeline {
                                     echo Nenhum resultado Allure encontrado para admin-access
                                     exit /b 0
                                 )
-                                npx allure generate allure-results/admin-access -o allure-report/admin-access --clean
+                                npx allure generate allure-results/admin-access -o allure-report/admin-access --clean --single-file
+                                if not exist allure-report/admin-access/index.html (
+                                    echo index.html nao foi gerado para admin-access
+                                    exit /b 1
+                                )
                                 '''
                                 if (testStatus != 0) {
                                     error('Admin Access tests failed')
