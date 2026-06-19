@@ -31,6 +31,7 @@ pipeline {
                 bat '''
                 if exist allure-results rmdir /s /q allure-results
                 if exist allure-report rmdir /s /q allure-report
+                if exist test-results/videos rmdir /s /q test-results/videos
                 '''
             }
         }
@@ -185,6 +186,7 @@ pipeline {
             }
             archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'allure-report/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'test-results/videos/**', allowEmptyArchive: true
         }
     }
 }
