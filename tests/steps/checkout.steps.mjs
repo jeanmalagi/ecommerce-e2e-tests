@@ -5,15 +5,8 @@ import {
 } from '@cucumber/cucumber';
 
 import assert from 'assert';
-import { chromium } from 'playwright';
 
 Given('que o usuário cliente está logado', async function () {
-
-  if (!this.page) {
-    this.browser = await chromium.launch({ headless: false });
-    this.context = await this.browser.newContext();
-    this.page = await this.context.newPage();
-  }
 
   await this.page.goto('http://localhost:5174/login');
 

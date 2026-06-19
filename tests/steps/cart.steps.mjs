@@ -4,7 +4,6 @@ import {
   Then
 } from '@cucumber/cucumber';
 
-import { chromium } from 'playwright';
 import assert from 'assert';
 
 
@@ -12,12 +11,6 @@ import assert from 'assert';
 // ✅ GIVEN - CLIENTE LOGADO
 // ==============================
 Given('que o cliente está logado', async function () {
-
-  if (!this.page) {
-    this.browser = await chromium.launch({ headless: false });
-    this.context = await this.browser.newContext();
-    this.page = await this.context.newPage();
-  }
 
   await this.page.goto('http://localhost:5174/login');
 
@@ -39,12 +32,6 @@ Given('que o cliente está logado', async function () {
 // ✅ GIVEN - COM PRODUTO NO CARRINHO
 // ==============================
 Given('que o cliente está com produto no carrinho', async function () {
-
-  if (!this.page) {
-    this.browser = await chromium.launch({ headless: false });
-    this.context = await this.browser.newContext();
-    this.page = await this.context.newPage();
-  }
 
   await this.page.goto('http://localhost:5174/login');
 

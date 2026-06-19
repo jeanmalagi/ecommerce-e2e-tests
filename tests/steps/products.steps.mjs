@@ -4,7 +4,6 @@ import {
   Then
 } from '@cucumber/cucumber';
 
-import { chromium } from 'playwright';
 import assert from 'assert';
 
 
@@ -12,12 +11,6 @@ import assert from 'assert';
 // ✅ GIVEN - ADMIN LOGADO
 // ==============================
 Given('que o administrador está logado', async function () {
-
-  if (!this.page) {
-    this.browser = await chromium.launch({ headless: false });
-    this.context = await this.browser.newContext();
-    this.page = await this.context.newPage();
-  }
 
   await this.page.goto('http://localhost:5174/login');
 
@@ -35,12 +28,6 @@ Given('que o administrador está logado', async function () {
 // ✅ GIVEN - CLIENTE LOGIN PAGE
 // ==============================
 Given('que o cliente acessa a página de login', async function () {
-
-  if (!this.page) {
-    this.browser = await chromium.launch({ headless: false });
-    this.context = await this.browser.newContext();
-    this.page = await this.context.newPage();
-  }
 
   await this.page.goto('http://localhost:5174/login');
 

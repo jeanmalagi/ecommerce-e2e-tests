@@ -2,6 +2,10 @@ pipeline {
 
     agent any
 
+    environment {
+        CI = 'true'
+    }
+
     stages {
 
         stage('Checkout') {
@@ -28,56 +32,66 @@ pipeline {
 
                 stage('Login') {
                     steps {
-                        bat '''
-                        npx cucumber-js tests/features/login.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
-                        '''
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            bat '''
+                            npx cucumber-js tests/features/login.feature ^
+                            --import "tests/steps/**/*.mjs" ^
+                            --import "support/**/*.mjs" ^
+                            -f allure-cucumberjs/reporter
+                            '''
+                        }
                     }
                 }
 
                 stage('Products') {
                     steps {
-                        bat '''
-                        npx cucumber-js tests/features/products.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
-                        '''
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            bat '''
+                            npx cucumber-js tests/features/products.feature ^
+                            --import "tests/steps/**/*.mjs" ^
+                            --import "support/**/*.mjs" ^
+                            -f allure-cucumberjs/reporter
+                            '''
+                        }
                     }
                 }
 
                 stage('Cart') {
                     steps {
-                        bat '''
-                        npx cucumber-js tests/features/cart.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
-                        '''
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            bat '''
+                            npx cucumber-js tests/features/cart.feature ^
+                            --import "tests/steps/**/*.mjs" ^
+                            --import "support/**/*.mjs" ^
+                            -f allure-cucumberjs/reporter
+                            '''
+                        }
                     }
                 }
 
                 stage('Checkout') {
                     steps {
-                        bat '''
-                        npx cucumber-js tests/features/checkout.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
-                        '''
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            bat '''
+                            npx cucumber-js tests/features/checkout.feature ^
+                            --import "tests/steps/**/*.mjs" ^
+                            --import "support/**/*.mjs" ^
+                            -f allure-cucumberjs/reporter
+                            '''
+                        }
                     }
                 }
 
                 stage('Admin Access') {
                     steps {
-                        bat '''
-                        npx cucumber-js tests/features/admin-access.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
-                        '''
+                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                            bat '''
+                            npx cucumber-js tests/features/admin-access.feature ^
+                            --import "tests/steps/**/*.mjs" ^
+                            --import "support/**/*.mjs" ^
+                            -f allure-cucumberjs/reporter
+                            '''
+                        }
                     }
                 }
             }
