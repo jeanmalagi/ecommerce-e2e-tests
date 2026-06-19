@@ -30,9 +30,7 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/login.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "tests/support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
+                        --config cucumber.mjs
                         '''
                     }
                 }
@@ -41,9 +39,7 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/products.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "tests/support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
+                        --config cucumber.mjs
                         '''
                     }
                 }
@@ -52,9 +48,7 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/cart.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "tests/support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
+                        --config cucumber.mjs
                         '''
                     }
                 }
@@ -63,9 +57,7 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/checkout.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "tests/support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
+                        --config cucumber.mjs
                         '''
                     }
                 }
@@ -74,9 +66,7 @@ pipeline {
                     steps {
                         bat '''
                         npx cucumber-js tests/features/admin-access.feature ^
-                        --import "tests/steps/**/*.mjs" ^
-                        --import "tests/support/**/*.mjs" ^
-                        -f allure-cucumberjs/reporter
+                        --config cucumber.mjs
                         '''
                     }
                 }
@@ -95,8 +85,16 @@ pipeline {
         }
 
         always {
-            bat 'if exist allure-report rmdir /s /q allure-report'
-            bat 'npx allure generate allure-results -o allure-report --clean'
+            bat '''
+            if not exist allure-results mkdir allure-results
+            dir /b allure-results\*-result.json >nul 2>nul
+            if errorlevel 1 (
+                echo Nenhum arquivo *-result.json encontrado em allure-results
+            ) else (
+                if exist allure-report rmdir /s /q allure-report
+                npx allure generate allure-results -o allure-report --clean
+            )
+            '''
             archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'allure-report/**', allowEmptyArchive: true
         }
