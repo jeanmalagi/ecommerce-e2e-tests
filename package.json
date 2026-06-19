@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "test:e2e": "cucumber-js tests/features",
-    "test:auth": "cucumber-js tests/features/login.feature"
+    "test:auth": "cucumber-js tests/features/login.feature",
+    "test:allure": "cucumber-js tests/features --import tests/steps/**/*.mjs --import tests/support/**/*.mjs -f @shelex/cucumberjs-allure2-reporter:./allure-results",
+    "allure:serve": "allure serve ./allure-results"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +16,8 @@
   "devDependencies": {
     "@cucumber/cucumber": "^13.0.0",
     "@playwright/test": "^1.61.0",
-    "playwright": "^1.61.0"
+    "playwright": "^1.61.0",
+    "@shelex/cucumberjs-allure2-reporter": "^3.0.0",
+    "@shelex/allure-commandline": "^2.25.0"
   }
 }
