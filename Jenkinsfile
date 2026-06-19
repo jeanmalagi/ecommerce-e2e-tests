@@ -32,7 +32,7 @@ pipeline {
                         npx cucumber-js tests/features/login.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f @shelex/cucumberjs-allure2-reporter:./allure-results/login
+                        -f cucumberjs-allure2-reporter:./allure-results/login
                         '''
                     }
                 }
@@ -43,7 +43,7 @@ pipeline {
                         npx cucumber-js tests/features/products.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f @shelex/cucumberjs-allure2-reporter:./allure-results/products
+                        -f cucumberjs-allure2-reporter:./allure-results/products
                         '''
                     }
                 }
@@ -54,7 +54,7 @@ pipeline {
                         npx cucumber-js tests/features/cart.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f @shelex/cucumberjs-allure2-reporter:./allure-results/cart
+                        -f cucumberjs-allure2-reporter:./allure-results/cart
                         '''
                     }
                 }
@@ -65,7 +65,7 @@ pipeline {
                         npx cucumber-js tests/features/checkout.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f @shelex/cucumberjs-allure2-reporter:./allure-results/checkout
+                        -f cucumberjs-allure2-reporter:./allure-results/checkout
                         '''
                     }
                 }
@@ -76,7 +76,7 @@ pipeline {
                         npx cucumber-js tests/features/admin-access.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f @shelex/cucumberjs-allure2-reporter:./allure-results/admin-access
+                        -f cucumberjs-allure2-reporter:./allure-results/admin-access
                         '''
                     }
                 }
