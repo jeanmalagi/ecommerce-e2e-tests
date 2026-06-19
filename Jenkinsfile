@@ -48,22 +48,10 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if not exist allure-report mkdir allure-report
+                                    if exist allure-results/login rmdir /s /q allure-results/login
                                     npx cucumber-js --config cucumber.mjs --profile login
                                     '''
                                 )
-                                bat '''
-                                dir /b allure-results/login/*-result.json >nul 2>nul
-                                if errorlevel 1 (
-                                    echo Nenhum resultado Allure encontrado para login
-                                    exit /b 0
-                                )
-                                npx allure generate allure-results/login -o allure-report/login --clean --single-file
-                                if not exist allure-report/login/index.html (
-                                    echo index.html nao foi gerado para login
-                                    exit /b 1
-                                )
-                                '''
                                 if (testStatus != 0) {
                                     error('Login tests failed')
                                 }
@@ -79,22 +67,10 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if not exist allure-report mkdir allure-report
+                                    if exist allure-results/products rmdir /s /q allure-results/products
                                     npx cucumber-js --config cucumber.mjs --profile products
                                     '''
                                 )
-                                bat '''
-                                dir /b allure-results/products/*-result.json >nul 2>nul
-                                if errorlevel 1 (
-                                    echo Nenhum resultado Allure encontrado para products
-                                    exit /b 0
-                                )
-                                npx allure generate allure-results/products -o allure-report/products --clean --single-file
-                                if not exist allure-report/products/index.html (
-                                    echo index.html nao foi gerado para products
-                                    exit /b 1
-                                )
-                                '''
                                 if (testStatus != 0) {
                                     error('Products tests failed')
                                 }
@@ -110,22 +86,10 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if not exist allure-report mkdir allure-report
+                                    if exist allure-results/cart rmdir /s /q allure-results/cart
                                     npx cucumber-js --config cucumber.mjs --profile cart
                                     '''
                                 )
-                                bat '''
-                                dir /b allure-results/cart/*-result.json >nul 2>nul
-                                if errorlevel 1 (
-                                    echo Nenhum resultado Allure encontrado para cart
-                                    exit /b 0
-                                )
-                                npx allure generate allure-results/cart -o allure-report/cart --clean --single-file
-                                if not exist allure-report/cart/index.html (
-                                    echo index.html nao foi gerado para cart
-                                    exit /b 1
-                                )
-                                '''
                                 if (testStatus != 0) {
                                     error('Cart tests failed')
                                 }
@@ -141,22 +105,10 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if not exist allure-report mkdir allure-report
+                                    if exist allure-results/checkout rmdir /s /q allure-results/checkout
                                     npx cucumber-js --config cucumber.mjs --profile checkout
                                     '''
                                 )
-                                bat '''
-                                dir /b allure-results/checkout/*-result.json >nul 2>nul
-                                if errorlevel 1 (
-                                    echo Nenhum resultado Allure encontrado para checkout
-                                    exit /b 0
-                                )
-                                npx allure generate allure-results/checkout -o allure-report/checkout --clean --single-file
-                                if not exist allure-report/checkout/index.html (
-                                    echo index.html nao foi gerado para checkout
-                                    exit /b 1
-                                )
-                                '''
                                 if (testStatus != 0) {
                                     error('Checkout tests failed')
                                 }
@@ -172,22 +124,10 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if not exist allure-report mkdir allure-report
+                                    if exist allure-results/admin-access rmdir /s /q allure-results/admin-access
                                     npx cucumber-js --config cucumber.mjs --profile adminAccess
                                     '''
                                 )
-                                bat '''
-                                dir /b allure-results/admin-access/*-result.json >nul 2>nul
-                                if errorlevel 1 (
-                                    echo Nenhum resultado Allure encontrado para admin-access
-                                    exit /b 0
-                                )
-                                npx allure generate allure-results/admin-access -o allure-report/admin-access --clean --single-file
-                                if not exist allure-report/admin-access/index.html (
-                                    echo index.html nao foi gerado para admin-access
-                                    exit /b 1
-                                )
-                                '''
                                 if (testStatus != 0) {
                                     error('Admin Access tests failed')
                                 }
@@ -210,6 +150,37 @@ pipeline {
         }
 
         always {
+            script {
+                def reportStatus = bat(
+                    returnStatus: true,
+                    script: '''
+                    if exist allure-report rmdir /s /q allure-report
+                    mkdir allure-report
+
+                    for %%D in (login products cart checkout admin-access) do (
+                        dir /b allure-results/%%D/*-result.json >nul 2>nul
+                        if errorlevel 1 (
+                            echo Nenhum resultado Allure encontrado para %%D
+                        ) else (
+                            echo Gerando report para %%D...
+                            npx allure generate allure-results/%%D -o allure-report/%%D --clean --single-file
+                            if not exist allure-report/%%D/index.html (
+                                echo index.html nao foi gerado para %%D
+                                exit /b 2
+                            )
+                        )
+                    )
+
+                    echo Indexes gerados:
+                    for /r allure-report %%F in (index.html) do @echo %%F
+                    exit /b 0
+                    '''
+                )
+
+                if (reportStatus != 0) {
+                    echo 'Aviso: geracao de algum report Allure falhou.'
+                }
+            }
             archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'allure-report/**', allowEmptyArchive: true
         }
