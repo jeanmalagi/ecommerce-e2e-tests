@@ -35,15 +35,27 @@ pipeline {
                 stage('Login') {
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            bat '''
-                            if exist allure-results/login rmdir /s /q allure-results/login
-                            set ALLURE_RESULTS_DIR=allure-results/login
-                            npx cucumber-js tests/features/login.feature ^
-                            --import "tests/steps/**/*.mjs" ^
-                            --import "support/**/*.mjs" ^
-                            -f progress ^
-                            -f allure-cucumberjs/reporter
-                            '''
+                            script {
+                                def testStatus = bat(
+                                    returnStatus: true,
+                                    script: '''
+                                    if exist allure-results/login rmdir /s /q allure-results/login
+                                    if exist allure-report/login rmdir /s /q allure-report/login
+                                    npx cucumber-js --config cucumber.mjs --profile login -f progress
+                                    '''
+                                )
+                                bat '''
+                                dir /b allure-results/login/*-result.json >nul 2>nul
+                                if errorlevel 1 (
+                                    echo Nenhum resultado Allure encontrado para login
+                                    exit /b 0
+                                )
+                                npx allure generate allure-results/login -o allure-report/login --clean
+                                '''
+                                if (testStatus != 0) {
+                                    error('Login tests failed')
+                                }
+                            }
                         }
                     }
                 }
@@ -51,15 +63,27 @@ pipeline {
                 stage('Products') {
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            bat '''
-                            if exist allure-results/products rmdir /s /q allure-results/products
-                            set ALLURE_RESULTS_DIR=allure-results/products
-                            npx cucumber-js tests/features/products.feature ^
-                            --import "tests/steps/**/*.mjs" ^
-                            --import "support/**/*.mjs" ^
-                            -f progress ^
-                            -f allure-cucumberjs/reporter
-                            '''
+                            script {
+                                def testStatus = bat(
+                                    returnStatus: true,
+                                    script: '''
+                                    if exist allure-results/products rmdir /s /q allure-results/products
+                                    if exist allure-report/products rmdir /s /q allure-report/products
+                                    npx cucumber-js --config cucumber.mjs --profile products -f progress
+                                    '''
+                                )
+                                bat '''
+                                dir /b allure-results/products/*-result.json >nul 2>nul
+                                if errorlevel 1 (
+                                    echo Nenhum resultado Allure encontrado para products
+                                    exit /b 0
+                                )
+                                npx allure generate allure-results/products -o allure-report/products --clean
+                                '''
+                                if (testStatus != 0) {
+                                    error('Products tests failed')
+                                }
+                            }
                         }
                     }
                 }
@@ -67,15 +91,27 @@ pipeline {
                 stage('Cart') {
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            bat '''
-                            if exist allure-results/cart rmdir /s /q allure-results/cart
-                            set ALLURE_RESULTS_DIR=allure-results/cart
-                            npx cucumber-js tests/features/cart.feature ^
-                            --import "tests/steps/**/*.mjs" ^
-                            --import "support/**/*.mjs" ^
-                            -f progress ^
-                            -f allure-cucumberjs/reporter
-                            '''
+                            script {
+                                def testStatus = bat(
+                                    returnStatus: true,
+                                    script: '''
+                                    if exist allure-results/cart rmdir /s /q allure-results/cart
+                                    if exist allure-report/cart rmdir /s /q allure-report/cart
+                                    npx cucumber-js --config cucumber.mjs --profile cart -f progress
+                                    '''
+                                )
+                                bat '''
+                                dir /b allure-results/cart/*-result.json >nul 2>nul
+                                if errorlevel 1 (
+                                    echo Nenhum resultado Allure encontrado para cart
+                                    exit /b 0
+                                )
+                                npx allure generate allure-results/cart -o allure-report/cart --clean
+                                '''
+                                if (testStatus != 0) {
+                                    error('Cart tests failed')
+                                }
+                            }
                         }
                     }
                 }
@@ -83,15 +119,27 @@ pipeline {
                 stage('Checkout') {
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            bat '''
-                            if exist allure-results/checkout rmdir /s /q allure-results/checkout
-                            set ALLURE_RESULTS_DIR=allure-results/checkout
-                            npx cucumber-js tests/features/checkout.feature ^
-                            --import "tests/steps/**/*.mjs" ^
-                            --import "support/**/*.mjs" ^
-                            -f progress ^
-                            -f allure-cucumberjs/reporter
-                            '''
+                            script {
+                                def testStatus = bat(
+                                    returnStatus: true,
+                                    script: '''
+                                    if exist allure-results/checkout rmdir /s /q allure-results/checkout
+                                    if exist allure-report/checkout rmdir /s /q allure-report/checkout
+                                    npx cucumber-js --config cucumber.mjs --profile checkout -f progress
+                                    '''
+                                )
+                                bat '''
+                                dir /b allure-results/checkout/*-result.json >nul 2>nul
+                                if errorlevel 1 (
+                                    echo Nenhum resultado Allure encontrado para checkout
+                                    exit /b 0
+                                )
+                                npx allure generate allure-results/checkout -o allure-report/checkout --clean
+                                '''
+                                if (testStatus != 0) {
+                                    error('Checkout tests failed')
+                                }
+                            }
                         }
                     }
                 }
@@ -99,15 +147,27 @@ pipeline {
                 stage('Admin Access') {
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
-                            bat '''
-                            if exist allure-results/admin-access rmdir /s /q allure-results/admin-access
-                            set ALLURE_RESULTS_DIR=allure-results/admin-access
-                            npx cucumber-js tests/features/admin-access.feature ^
-                            --import "tests/steps/**/*.mjs" ^
-                            --import "support/**/*.mjs" ^
-                            -f progress ^
-                            -f allure-cucumberjs/reporter
-                            '''
+                            script {
+                                def testStatus = bat(
+                                    returnStatus: true,
+                                    script: '''
+                                    if exist allure-results/admin-access rmdir /s /q allure-results/admin-access
+                                    if exist allure-report/admin-access rmdir /s /q allure-report/admin-access
+                                    npx cucumber-js --config cucumber.mjs --profile adminAccess -f progress
+                                    '''
+                                )
+                                bat '''
+                                dir /b allure-results/admin-access/*-result.json >nul 2>nul
+                                if errorlevel 1 (
+                                    echo Nenhum resultado Allure encontrado para admin-access
+                                    exit /b 0
+                                )
+                                npx allure generate allure-results/admin-access -o allure-report/admin-access --clean
+                                '''
+                                if (testStatus != 0) {
+                                    error('Admin Access tests failed')
+                                }
+                            }
                         }
                     }
                 }
@@ -126,32 +186,6 @@ pipeline {
         }
 
         always {
-            script {
-                def allureStatus = bat(
-                    returnStatus: true,
-                    script: '''
-                    if not exist allure-results mkdir allure-results
-                    if exist allure-report rmdir /s /q allure-report
-                    mkdir allure-report
-
-                    for %%D in (login products cart checkout admin-access) do (
-                        dir /b allure-results/%%D/*-result.json >nul 2>nul
-                        if not errorlevel 1 (
-                            echo Gerando Allure report para %%D...
-                            npx allure generate allure-results/%%D -o allure-report/%%D --clean
-                        ) else (
-                            echo Nenhum resultado Allure encontrado para %%D
-                        )
-                    )
-
-                    exit /b 0
-                    '''
-                )
-
-                if (allureStatus != 0) {
-                    echo 'Aviso: falha ao gerar Allure report, mas o pipeline nao sera interrompido no post always.'
-                }
-            }
             archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'allure-report/**', allowEmptyArchive: true
         }

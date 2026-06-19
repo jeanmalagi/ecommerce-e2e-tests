@@ -4,9 +4,9 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "test:e2e": "cucumber-js tests/features --import tests/steps/**/*.mjs --import support/**/*.mjs -f allure-cucumberjs/reporter",
-    "test:auth": "cucumber-js tests/features/login.feature --import tests/steps/**/*.mjs --import support/**/*.mjs -f allure-cucumberjs/reporter",
-    "test:allure": "cucumber-js tests/features --import tests/steps/**/*.mjs --import support/**/*.mjs -f allure-cucumberjs/reporter",
+    "test:e2e": "cucumber-js --config cucumber.mjs",
+    "test:auth": "cucumber-js --config cucumber.mjs --profile login",
+    "test:allure": "cucumber-js --config cucumber.mjs",
     "allure:serve": "allure serve ./allure-results"
   },
   "keywords": [],
