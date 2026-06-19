@@ -29,7 +29,7 @@ pipeline {
                 stage('Login') {
                     steps {
                         bat '''
-                        if exist allure-results\login rmdir /s /q allure-results\login
+                        if exist allure-results/login rmdir /s /q allure-results/login
                         npx cucumber-js tests/features/login.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
@@ -41,7 +41,7 @@ pipeline {
                 stage('Products') {
                     steps {
                         bat '''
-                        if exist allure-results\products rmdir /s /q allure-results\products
+                        if exist allure-results/products rmdir /s /q allure-results/products
                         npx cucumber-js tests/features/products.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
@@ -53,7 +53,7 @@ pipeline {
                 stage('Cart') {
                     steps {
                         bat '''
-                        if exist allure-results\cart rmdir /s /q allure-results\cart
+                        if exist allure-results/cart rmdir /s /q allure-results/cart
                         npx cucumber-js tests/features/cart.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
@@ -65,7 +65,7 @@ pipeline {
                 stage('Checkout') {
                     steps {
                         bat '''
-                        if exist allure-results\checkout rmdir /s /q allure-results\checkout
+                        if exist allure-results/checkout rmdir /s /q allure-results/checkout
                         npx cucumber-js tests/features/checkout.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
@@ -77,7 +77,7 @@ pipeline {
                 stage('Admin Access') {
                     steps {
                         bat '''
-                        if exist allure-results\admin-access rmdir /s /q allure-results\admin-access
+                        if exist allure-results/admin-access rmdir /s /q allure-results/admin-access
                         npx cucumber-js tests/features/admin-access.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
@@ -102,7 +102,7 @@ pipeline {
         always {
             archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
             dir('allure-results') {
-                bat 'if exist report rmdir /s /q report'
+                bat 'if exist report/ rmdir /s /q report'
                 bat 'npx allure generate . -o report --clean'
             }
             archiveArtifacts artifacts: 'allure-results/report/**', allowEmptyArchive: true
