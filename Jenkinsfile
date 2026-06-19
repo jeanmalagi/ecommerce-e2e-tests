@@ -165,6 +165,7 @@ pipeline {
                                 echo index.html nao foi gerado para %%D
                                 exit /b 2
                             )
+                            powershell -NoProfile -ExecutionPolicy Bypass -Command "Compress-Archive -Path 'allure-report/%%D/*' -DestinationPath 'allure-report/%%D-report.zip' -Force"
                         ) else (
                             echo Nenhum resultado Allure encontrado para %%D
                         )
@@ -172,6 +173,8 @@ pipeline {
 
                     echo Indexes gerados:
                     for /r allure-report %%F in (index.html) do @echo %%F
+                    echo Zips gerados:
+                    dir /b allure-report/*-report.zip
                     exit /b 0
                     '''
                 )
