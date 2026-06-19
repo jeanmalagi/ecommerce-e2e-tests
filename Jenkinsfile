@@ -49,7 +49,7 @@ pipeline {
                                     returnStatus: true,
                                     script: '''
                                     if not exist allure-report mkdir allure-report
-                                    npx cucumber-js --config cucumber.mjs --profile login -f progress
+                                    npx cucumber-js --config cucumber.mjs --profile login
                                     '''
                                 )
                                 bat '''
@@ -76,7 +76,7 @@ pipeline {
                                     returnStatus: true,
                                     script: '''
                                     if not exist allure-report mkdir allure-report
-                                    npx cucumber-js --config cucumber.mjs --profile products -f progress
+                                    npx cucumber-js --config cucumber.mjs --profile products
                                     '''
                                 )
                                 bat '''
@@ -103,7 +103,7 @@ pipeline {
                                     returnStatus: true,
                                     script: '''
                                     if not exist allure-report mkdir allure-report
-                                    npx cucumber-js --config cucumber.mjs --profile cart -f progress
+                                    npx cucumber-js --config cucumber.mjs --profile cart
                                     '''
                                 )
                                 bat '''
@@ -130,7 +130,7 @@ pipeline {
                                     returnStatus: true,
                                     script: '''
                                     if not exist allure-report mkdir allure-report
-                                    npx cucumber-js --config cucumber.mjs --profile checkout -f progress
+                                    npx cucumber-js --config cucumber.mjs --profile checkout
                                     '''
                                 )
                                 bat '''
@@ -157,7 +157,7 @@ pipeline {
                                     returnStatus: true,
                                     script: '''
                                     if not exist allure-report mkdir allure-report
-                                    npx cucumber-js --config cucumber.mjs --profile adminAccess -f progress
+                                    npx cucumber-js --config cucumber.mjs --profile adminAccess
                                     '''
                                 )
                                 bat '''

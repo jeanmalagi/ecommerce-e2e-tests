@@ -3,7 +3,7 @@ const shared = {
     'tests/steps/**/*.mjs',
     'support/**/*.mjs'
   ],
-  format: ['allure-cucumberjs/reporter'],
+  format: ['progress', 'allure-cucumberjs/reporter'],
 };
 
 const defaultProfile = {
