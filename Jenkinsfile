@@ -28,15 +28,18 @@ pipeline {
 
         stage('Features') {
 
+            failFast false
+
             parallel {
 
                 stage('Login') {
                     steps {
-                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                             bat '''
                             npx cucumber-js tests/features/login.feature ^
                             --import "tests/steps/**/*.mjs" ^
                             --import "support/**/*.mjs" ^
+                            -f progress ^
                             -f allure-cucumberjs/reporter
                             '''
                         }
@@ -45,11 +48,12 @@ pipeline {
 
                 stage('Products') {
                     steps {
-                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                             bat '''
                             npx cucumber-js tests/features/products.feature ^
                             --import "tests/steps/**/*.mjs" ^
                             --import "support/**/*.mjs" ^
+                            -f progress ^
                             -f allure-cucumberjs/reporter
                             '''
                         }
@@ -58,11 +62,12 @@ pipeline {
 
                 stage('Cart') {
                     steps {
-                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                             bat '''
                             npx cucumber-js tests/features/cart.feature ^
                             --import "tests/steps/**/*.mjs" ^
                             --import "support/**/*.mjs" ^
+                            -f progress ^
                             -f allure-cucumberjs/reporter
                             '''
                         }
@@ -71,11 +76,12 @@ pipeline {
 
                 stage('Checkout') {
                     steps {
-                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                             bat '''
                             npx cucumber-js tests/features/checkout.feature ^
                             --import "tests/steps/**/*.mjs" ^
                             --import "support/**/*.mjs" ^
+                            -f progress ^
                             -f allure-cucumberjs/reporter
                             '''
                         }
@@ -84,11 +90,12 @@ pipeline {
 
                 stage('Admin Access') {
                     steps {
-                        catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                        catchError(buildResult: 'UNSTABLE', stageResult: 'FAILURE') {
                             bat '''
                             npx cucumber-js tests/features/admin-access.feature ^
                             --import "tests/steps/**/*.mjs" ^
                             --import "support/**/*.mjs" ^
+                            -f progress ^
                             -f allure-cucumberjs/reporter
                             '''
                         }
@@ -114,7 +121,7 @@ pipeline {
                     returnStatus: true,
                     script: '''
                     if not exist allure-results mkdir allure-results
-                    dir /b allure-results/*-result.json >nul 2>nul
+                    dir /s /b allure-results/*-result.json >nul 2>nul
                     if errorlevel 1 (
                         echo Nenhum arquivo *-result.json encontrado em allure-results
                         exit /b 0
