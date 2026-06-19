@@ -160,7 +160,7 @@ pipeline {
                     for %%D in (login products cart checkout admin-access) do (
                         if exist "allure-results\\%%D\\*-result.json" (
                             echo Gerando report para %%D...
-                            npx allure generate "allure-results\\%%D" -o "allure-report\\%%D" --clean
+                            npx allure generate "allure-results\\%%D" -o "allure-report\\%%D" --clean --single-file
                             if not exist "allure-report\\%%D\\index.html" (
                                 echo index.html nao foi gerado para %%D
                                 exit /b 2
