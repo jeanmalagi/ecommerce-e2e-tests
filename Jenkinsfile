@@ -29,9 +29,9 @@ pipeline {
         stage('Clean Allure Artifacts') {
             steps {
                 bat '''
-                if exist allure-results rmdir /s /q allure-results
-                if exist allure-report rmdir /s /q allure-report
-                if exist test-results/videos rmdir /s /q test-results/videos
+                if exist "allure-results" rmdir /s /q "allure-results"
+                if exist "allure-report" rmdir /s /q "allure-report"
+                if exist "test-results\videos" rmdir /s /q "test-results\videos"
                 '''
             }
         }
@@ -49,7 +49,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/login rmdir /s /q allure-results/login
+                                    if exist "allure-results\login" rmdir /s /q "allure-results\login"
                                     npx cucumber-js --config cucumber.mjs --profile login
                                     '''
                                 )
@@ -68,7 +68,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/products rmdir /s /q allure-results/products
+                                    if exist "allure-results\products" rmdir /s /q "allure-results\products"
                                     npx cucumber-js --config cucumber.mjs --profile products
                                     '''
                                 )
@@ -87,7 +87,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/cart rmdir /s /q allure-results/cart
+                                    if exist "allure-results\cart" rmdir /s /q "allure-results\cart"
                                     npx cucumber-js --config cucumber.mjs --profile cart
                                     '''
                                 )
@@ -106,7 +106,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/checkout rmdir /s /q allure-results/checkout
+                                    if exist "allure-results\checkout" rmdir /s /q "allure-results\checkout"
                                     npx cucumber-js --config cucumber.mjs --profile checkout
                                     '''
                                 )
@@ -125,7 +125,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/admin-access rmdir /s /q allure-results/admin-access
+                                    if exist "allure-results\admin-access" rmdir /s /q "allure-results\admin-access"
                                     npx cucumber-js --config cucumber.mjs --profile adminAccess
                                     '''
                                 )
@@ -155,8 +155,8 @@ pipeline {
                 def reportStatus = bat(
                     returnStatus: true,
                     script: '''
-                    if exist allure-report rmdir /s /q allure-report
-                    mkdir allure-report
+                    if exist "allure-report" rmdir /s /q "allure-report"
+                    mkdir "allure-report"
 
                     for %%D in (login products cart checkout admin-access) do (
                         if exist "allure-results\\%%D\\*-result.json" (
@@ -166,7 +166,7 @@ pipeline {
                                 echo index.html nao foi gerado para %%D
                                 exit /b 2
                             )
-                            powershell -NoProfile -ExecutionPolicy Bypass -Command "Compress-Archive -Path 'allure-report/%%D/*' -DestinationPath 'allure-report/%%D-report.zip' -Force"
+                            powershell -NoProfile -ExecutionPolicy Bypass -Command "Compress-Archive -Path 'allure-report\\%%D\\*' -DestinationPath 'allure-report\\%%D-report.zip' -Force"
                         ) else (
                             echo Nenhum resultado Allure encontrado para %%D
                         )
@@ -175,7 +175,7 @@ pipeline {
                     echo Indexes gerados:
                     for /r allure-report %%F in (index.html) do @echo %%F
                     echo Zips gerados:
-                    dir /b allure-report/*-report.zip
+                    dir /b "allure-report\*-report.zip"
                     exit /b 0
                     '''
                 )
