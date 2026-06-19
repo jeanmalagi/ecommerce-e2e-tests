@@ -29,11 +29,11 @@ pipeline {
                 stage('Login') {
                     steps {
                         bat '''
-                        if exist allure-results/login rmdir /s /q allure-results/login
+                        set ALLURE_RESULTS_DIR=allure-results/login
                         npx cucumber-js tests/features/login.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f cucumberjs-allure2-reporter:./allure-results/login
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
@@ -41,11 +41,11 @@ pipeline {
                 stage('Products') {
                     steps {
                         bat '''
-                        if exist allure-results/products rmdir /s /q allure-results/products
+                        set ALLURE_RESULTS_DIR=allure-results/products
                         npx cucumber-js tests/features/products.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f cucumberjs-allure2-reporter:./allure-results/products
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
@@ -53,11 +53,11 @@ pipeline {
                 stage('Cart') {
                     steps {
                         bat '''
-                        if exist allure-results/cart rmdir /s /q allure-results/cart
+                        set ALLURE_RESULTS_DIR=allure-results/cart
                         npx cucumber-js tests/features/cart.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f cucumberjs-allure2-reporter:./allure-results/cart
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
@@ -65,11 +65,11 @@ pipeline {
                 stage('Checkout') {
                     steps {
                         bat '''
-                        if exist allure-results/checkout rmdir /s /q allure-results/checkout
+                        set ALLURE_RESULTS_DIR=allure-results/checkout
                         npx cucumber-js tests/features/checkout.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f cucumberjs-allure2-reporter:./allure-results/checkout
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
@@ -77,11 +77,11 @@ pipeline {
                 stage('Admin Access') {
                     steps {
                         bat '''
-                        if exist allure-results/admin-access rmdir /s /q allure-results/admin-access
+                        set ALLURE_RESULTS_DIR=allure-results/admin-access
                         npx cucumber-js tests/features/admin-access.feature ^
                         --import "tests/steps/**/*.mjs" ^
                         --import "tests/support/**/*.mjs" ^
-                        -f cucumberjs-allure2-reporter:./allure-results/admin-access
+                        -f allure-cucumberjs/reporter
                         '''
                     }
                 }
