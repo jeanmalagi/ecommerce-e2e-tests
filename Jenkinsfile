@@ -82,13 +82,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Generate Allure Report') {
-            steps {
-                bat 'if exist allure-report rmdir /s /q allure-report'
-                bat 'npx allure generate allure-results -o allure-report --clean'
-            }
-        }
     }
 
     post {
@@ -102,6 +95,8 @@ pipeline {
         }
 
         always {
+            bat 'if exist allure-report rmdir /s /q allure-report'
+            bat 'npx allure generate allure-results -o allure-report --clean'
             archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'allure-report/**', allowEmptyArchive: true
         }
