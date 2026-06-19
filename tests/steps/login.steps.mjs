@@ -2,11 +2,9 @@ import {
   Given,
   When,
   Then,
-  After,
   setDefaultTimeout
 } from '@cucumber/cucumber';
 
-import { chromium } from 'playwright';
 import assert from 'assert';
 
 // ✅ Timeout global
@@ -14,9 +12,6 @@ setDefaultTimeout(30 * 1000);
 
 // ✅ GIVEN
 Given('que o usuário acessa a página de login', async function () {
-  this.browser = await chromium.launch({ headless: false });
-  this.page = await this.browser.newPage();
-
   await this.page.goto('http://localhost:5174/login', {
     waitUntil: 'domcontentloaded'
   });
@@ -36,15 +31,15 @@ When('clica no botão de login', async function () {
 
   this.dialogMessage = null;
 
-  // ✅ prepara escuta ANTES
-  const dialogPromise = this.page.waitForEvent('dialog').then(dialog => {
+  // Aguarda dialog por tempo curto. No login valido, nao ha dialog.
+  const dialogPromise = this.page.waitForEvent('dialog', { timeout: 3000 }).then(dialog => {
     this.dialogMessage = dialog.message();
     return dialog.accept();
-  }).catch(() => null); // ✅ evita quebra se não houver dialog
+  }).catch(() => null);
 
   await this.page.click('button[type="submit"]');
 
-  await dialogPromise; // ✅ espera captura (ou não)
+  await dialogPromise;
 });
 
 // ✅ SUCESSO
@@ -90,9 +85,3 @@ Then('deve ver uma mensagem de usuário não encontrado', async function () {
   );
 });
 
-// ✅ HOOK AUTOMÁTICO (fecha browser SEMPRE)
-After(async function () {
-  if (this.browser) {
-    await this.browser.close();
-  }
-});
