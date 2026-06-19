@@ -26,6 +26,15 @@ pipeline {
             }
         }
 
+        stage('Clean Allure Artifacts') {
+            steps {
+                bat '''
+                if exist allure-results rmdir /s /q allure-results
+                if exist allure-report rmdir /s /q allure-report
+                '''
+            }
+        }
+
         stage('Features') {
 
             failFast false
@@ -39,8 +48,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/login rmdir /s /q allure-results/login
-                                    if exist allure-report/login rmdir /s /q allure-report/login
+                                    if not exist allure-report mkdir allure-report
                                     npx cucumber-js --config cucumber.mjs --profile login -f progress
                                     '''
                                 )
@@ -67,8 +75,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/products rmdir /s /q allure-results/products
-                                    if exist allure-report/products rmdir /s /q allure-report/products
+                                    if not exist allure-report mkdir allure-report
                                     npx cucumber-js --config cucumber.mjs --profile products -f progress
                                     '''
                                 )
@@ -95,8 +102,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/cart rmdir /s /q allure-results/cart
-                                    if exist allure-report/cart rmdir /s /q allure-report/cart
+                                    if not exist allure-report mkdir allure-report
                                     npx cucumber-js --config cucumber.mjs --profile cart -f progress
                                     '''
                                 )
@@ -123,8 +129,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/checkout rmdir /s /q allure-results/checkout
-                                    if exist allure-report/checkout rmdir /s /q allure-report/checkout
+                                    if not exist allure-report mkdir allure-report
                                     npx cucumber-js --config cucumber.mjs --profile checkout -f progress
                                     '''
                                 )
@@ -151,8 +156,7 @@ pipeline {
                                 def testStatus = bat(
                                     returnStatus: true,
                                     script: '''
-                                    if exist allure-results/admin-access rmdir /s /q allure-results/admin-access
-                                    if exist allure-report/admin-access rmdir /s /q allure-report/admin-access
+                                    if not exist allure-report mkdir allure-report
                                     npx cucumber-js --config cucumber.mjs --profile adminAccess -f progress
                                     '''
                                 )
