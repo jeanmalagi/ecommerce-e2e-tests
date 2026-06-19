@@ -95,16 +95,25 @@ pipeline {
         }
 
         always {
-            bat '''
-            if not exist allure-results mkdir allure-results
-            dir /b allure-results/*-result.json >nul 2>nul
-            if errorlevel 1 (
-                echo Nenhum arquivo *-result.json encontrado em allure-results
-            ) else (
-                if exist allure-report rmdir /s /q allure-report
-                npx allure generate allure-results -o allure-report --clean
-            )
-            '''
+            script {
+                def allureStatus = bat(
+                    returnStatus: true,
+                    script: '''
+                    if not exist allure-results mkdir allure-results
+                    dir /b allure-results/*-result.json >nul 2>nul
+                    if errorlevel 1 (
+                        echo Nenhum arquivo *-result.json encontrado em allure-results
+                        exit /b 0
+                    )
+                    if exist allure-report rmdir /s /q allure-report
+                    npx allure generate allure-results -o allure-report --clean
+                    '''
+                )
+
+                if (allureStatus != 0) {
+                    echo 'Aviso: falha ao gerar Allure report, mas o pipeline nao sera interrompido no post always.'
+                }
+            }
             archiveArtifacts artifacts: 'allure-results/**', allowEmptyArchive: true
             archiveArtifacts artifacts: 'allure-report/**', allowEmptyArchive: true
         }
