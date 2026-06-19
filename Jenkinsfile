@@ -87,7 +87,7 @@ pipeline {
         always {
             bat '''
             if not exist allure-results mkdir allure-results
-            dir /b allure-results\*-result.json >nul 2>nul
+            dir /b allure-results/*-result.json >nul 2>nul
             if errorlevel 1 (
                 echo Nenhum arquivo *-result.json encontrado em allure-results
             ) else (
